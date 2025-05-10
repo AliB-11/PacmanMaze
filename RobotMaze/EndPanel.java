@@ -12,95 +12,76 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-/** 
-* The EndPanel class 
-* <p> This class creates a final panel for the user to interact with </p>
-* <p> it has an image, a message, a scroll pane, and a button to restart the program </p>
-* @author 
-* @version 1.0
-* @since 2023-01-24
-*/
-public class EndPanel extends JPanel implements ActionListener{
+public class EndPanel extends JPanel implements ActionListener {
 
     // Fileds
-    
+
     /**
-    * endImage is a JLabel that will hold display an image 
-    */
+     * endImage is a JLabel that will hold display an image
+     */
     JLabel endImage;
     /**
-    * endText is a JLabel that will have a message that says congrats
-    */
-    JLabel endText;
-    /**
-    * playAgain is a JButton that will we restart the program
-    */
+     * endText is a JLabel that will have a message that says congrats
+     */
+
     JButton playAgain;
     /**
-    * txtArea is JTextArea that holds the message from a file
-    */
+     * txtArea is JTextArea that holds the message from a file
+     */
     JTextArea txtArea;
     /**
-    * jScrollPane is a JScrollPane that shows the message from a file neater
-    */
+     * jScrollPane is a JScrollPane that shows the message from a file neater
+     */
     JScrollPane jScrollPane;
 
-    // Contructor
-
-    /**
-   * <p> This constructor will create all the piece for the panel </p>
-   * @param data String that has the message to load in scroll pane
-   */
+    // contructor
     public EndPanel(String data) {
 
-    // set the background colour of the panel
-    this.setBackground(Color.yellow);
-    setLayout(null);
+        // set the background colour
+        this.setBackground(Color.yellow);
+        setLayout(null);
 
-    // initilize the button, label, and txtArea
-    playAgain = new JButton("Again");
-    endImage = new JLabel();
-    endText = new JLabel("Congratulations On Completing The Game!!!");
-    txtArea = new JTextArea();
+        // initilize the button, label, and txtArea
+        playAgain = new JButton("Replay");
+        endImage = new JLabel();
 
-    // new object trophy that holds the image luffygame.png
-    ImageIcon trophy = new ImageIcon("images/YouWinText.png");
+        txtArea = new JTextArea();
 
-    // set the image to the label
-    endImage.setIcon(trophy);
+        // new object trophy that holds the image luffygame.png
+        ImageIcon trophy = new ImageIcon("images/EndScreen4.png");
 
-    // set the bounds of the button, text, and image
-    playAgain.setBounds(10,360, 100, 50);
-    endText.setBounds(10,10,400,40);
-    endImage.setBounds(10,50,300,300);
+        // set the image to the label
+        endImage.setIcon(trophy);
 
-    // add an action listener to the button
-    playAgain.addActionListener(this);
+        // set the bounds of the button, text, and image
+        playAgain.setBounds(125, 400, 100, 50);
 
-    // set the text of the jtextarea as the string passed in contstructor
-    txtArea.setText(data); 
+        endImage.setBounds(5, 5, 330, 465);
 
-    // create new object jscrollpane and put the txtarea in it
-    jScrollPane = new JScrollPane(txtArea);
-    // set the bounds of the jscrollpane
-    jScrollPane.setBounds(120,360,200,100);
+        // add an action listener to the button
+        playAgain.addActionListener(this);
 
+        // set the text of the jtextarea as the string passed in contstructor
+        txtArea.setText(data);
+        txtArea.setCaretPosition(0);
 
-    // add the scrollpane, image, text, and button to the panel
-    add(jScrollPane);
-    add(endImage);
-    add(endText);
-    add(playAgain);
+        // create new object jscrollpane and put the txtarea in it
+        jScrollPane = new JScrollPane(txtArea);
+        // set the bounds of the jscrollpane
+        jScrollPane.setBounds(50, 310, 250, 70);
+
+        // add the scrollpane, image, text, and button to the panel
+        add(playAgain);
+        add(jScrollPane);
+        add(endImage);
+
     }
 
-    
-    /** 
-     * <p> Method actionPerformed happens when the button is click </p>
-     * <p> Calls a main method from main class to restart the program </p>
-     * @param e
+    /**
+     * Method actionPerformed happens when the button is clicked
+     * Calls a main method from main class to restart the program
      */
     public void actionPerformed(ActionEvent e) {
-        // when the play again button is clicked
         // call main method in main class to restart the program
         Main.main(null);
     }
