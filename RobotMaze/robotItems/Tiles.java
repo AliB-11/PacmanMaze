@@ -1,10 +1,6 @@
 package robotItems;
 /** 
 * The Tiles class 
-* <p> This class holds the information of each  tile in the map </p>
-* @author Ali
-* @version 1.0
-* @since 2023-01-24
 */
 public class Tiles {
   // Feilds
