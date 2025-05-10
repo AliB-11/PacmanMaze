@@ -41,7 +41,7 @@ Select your maze size and start the game:
 Pacman explores the maze, changing direction and stepping over tiles.
 
 
-![GamePlay](https://github.com/user-attachments/assets/49509949-f5c8-4989-9da5-5059231190e9)
+https://github.com/user-attachments/assets/49509949-f5c8-4989-9da5-5059231190e9
 
 ---
 
