@@ -6,13 +6,7 @@ import java.util.Random;
 
 /**
  * The Robot class
- * <p>
  * This class makes the decison for where the robot should move
- * </p>
- * 
- * @author Ali
- * @version 1.0
- * @since 2023-01-24
  */
 public class Robot {
   // Fields
@@ -34,13 +28,12 @@ public class Robot {
    */
   private LocalMap localMap;
 
+  private String chosenDirection = "Right";
+
   // Contructor
 
   /**
-   * <p>
    * This constructor will just initlize the fields
-   * </p>
-   * 
    * @param name String that has the name of the robot
    */
   public Robot(String name) {
@@ -49,16 +42,22 @@ public class Robot {
     previousMoves = new ArrayList<Tiles>();
   }
 
+  public String getChosenDirection() {
+    return chosenDirection;
+  }
+
+  public void setChosenDirection(String dir) {
+    chosenDirection = dir;
+  }
+
   /**
-   * <p>
    * moveRobot Method chooses where the robot should move to next
-   * </p>
-   * 
    * @param hashOptions
    * @param map
    * @param currentPosition
    * @return int[]
    */
+
   public int[] moveRobot(HashMap<String, Tiles> hashOptions, Tiles[][] map, int[] currentPosition) {
     // create random object
     Random rand = new Random();
@@ -69,8 +68,12 @@ public class Robot {
     if (hashOptions.size() == 1) {
       // get the only key in the hashmap
       String firstKey = hashOptions.keySet().stream().findFirst().get();
+
+      chosenDirection = firstKey;
       // create a tile that equals the value in the hashmap
       Tiles check = hashOptions.get(firstKey);
+      System.out.println(chosenDirection);
+      setChosenDirection(chosenDirection);
       // if the if the only option to move is the start tile
       if (check.getX() == 0 && check.getY() == 0) {
         // move to the start tile
@@ -99,8 +102,11 @@ public class Robot {
         // choose a random tile that has not been walked on
         int randomNum = rand.nextInt(nonWalkedTiles.size());
         // set the new postion to that tile
+        chosenDirection = keysAsArrays.get(randomNum);
         newPosition[0] = nonWalkedTiles.get(keysAsArrays.get(randomNum)).getY();
         newPosition[1] = nonWalkedTiles.get(keysAsArrays.get(randomNum)).getX();
+        System.out.println(chosenDirection);
+        setChosenDirection(chosenDirection);
 
         // remember this move by saving it to the previous move arraylist
         previousMoves.add(0, nonWalkedTiles.get(keysAsArrays.get(randomNum)));
@@ -141,6 +147,9 @@ public class Robot {
               // move to the start tile
               newPosition[0] = 0;
               newPosition[1] = 0;
+              chosenDirection = "Left";
+              System.out.println(chosenDirection);
+              setChosenDirection(chosenDirection);
               // return the new postion
               return newPosition;
             }
@@ -151,6 +160,9 @@ public class Robot {
               // move to the start tile
               newPosition[0] = 0;
               newPosition[1] = 0;
+              chosenDirection = "Up";
+              System.out.println(chosenDirection);
+              setChosenDirection(chosenDirection);
 
               // return new position
               return newPosition;
@@ -163,9 +175,27 @@ public class Robot {
             // create new hashmap called mapPlaceholder
             HashMap<String, Tiles> mapPlaceholder = new HashMap<>();
 
+            int[] fromPosition = currentPosition.clone();
             // move to the previous tile
             newPosition[0] = previousMoves.get(0).getY();
             newPosition[1] = previousMoves.get(0).getX();
+
+            int deltaRow = newPosition[0] - fromPosition[0];
+            int deltaCol = newPosition[1] - fromPosition[1];
+
+            if (deltaRow == -1 && deltaCol == 0) {
+              chosenDirection = "Left";
+            } else if (deltaRow == 1 && deltaCol == 0) {
+              chosenDirection = "Right";
+            } else if (deltaRow == 0 && deltaCol == -1) {
+              chosenDirection = "Up";
+            } else if (deltaRow == 0 && deltaCol == 1) {
+              chosenDirection = "Down";
+            }
+
+            // (Optional) Log direction
+            System.out.println(chosenDirection);
+            setChosenDirection(chosenDirection);
 
             // check if the preivous tile has a tile that has not been walked on
             mapPlaceholder = localMap.updateLocalMap(newPosition, map);
