@@ -19,66 +19,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * The MapPanel class
- * <p>
- * This class is the main panel for the robot game
- * </p>
- * <p>
- * it has the grid (map) aswell as the robot moving through it
- * </p>
- * 
- * @author
- * @version 1.0
- * @since 2023-01-24
+ * MapPanel class
+ * This class is the main panel for the game
+ * it has the grid aswell as the character moving through it
  */
 public class MapPanel extends JPanel implements ActionListener {
   // Fields
 
-  /**
-   * size is an int that holds the dimentions of the map
-   */
   private int size;
-  /**
-   * map is a two dimentinal array of tiles
-   */
+
   private Tiles[][] map;
-  /**
-   * counter is an int that counts how many times the robot was moved
-   */
+
   private int counter = 0;
-  /**
-   * robotPosition is int array that holds the row and column the robot is at
-   */
+
   private int[] robotPosition;
 
-  /**
-   * mapvisual is a two dimentonal array of JLabels that shows the tiles
-   */
   JLabel[][] mapVisual;
-  /**
-   * error is JLabel that the robot says if there are no paths
-   */
+
   JLabel error;
-  /**
-   * enter is JButton that moves the robot
-   */
+
   JButton enter;
-  /**
-   * restart is a JButton that restarts the program
-   */
+
   JButton restart;
-  /**
-   * robotLabel is a JLabel that is that is the visual of the robot
-   */
+
   JLabel robotLabel;
 
-  /**
-   * robot is a Robot which is mainly its brain
-   */
   Robot robot;
-  /**
-   * localMap is a LocalMap that gives the options that the robot can move to
-   */
+
   LocalMap localMap;
 
   /**
@@ -93,47 +60,44 @@ public class MapPanel extends JPanel implements ActionListener {
   /**
    * startBlock is an ImageIcon that holds the image of the start block
    */
-  ImageIcon startBlock = new ImageIcon("images/Arrowblock.png");
+  ImageIcon startBlock = new ImageIcon("images/ready.png");
   /**
    * unknownBlock is an ImageIcon that holds the image of the unknown block
    */
-  ImageIcon unknownBlock = new ImageIcon("images/QuestionBlock.png");
+  ImageIcon unknownBlock = new ImageIcon("images/question.png");
   /**
    * endBlock is an ImageIcon that holds the image of the end block
    */
-  ImageIcon endBlock = new ImageIcon("images/FinishedBlock.png");
+  ImageIcon endBlock = new ImageIcon("images/berry.png");
   /**
    * robotImage is an ImageIcon that holds the image of the robot
    */
-  ImageIcon robotImage = new ImageIcon("images/RobotBlock.png");
+  ImageIcon robotImage = new ImageIcon("images/PacR.png");
   /**
    * solidBlock is an ImageIcon that holds the image of a solid block
    */
-  ImageIcon solidBlock = new ImageIcon("images/checkmark.png");
+  ImageIcon solidBlock = new ImageIcon("images/points.png");
   /**
    * notSolidBlock is an ImageIcon that holds the image of a not solid block
    */
-  ImageIcon notSolidBlock = new ImageIcon("images/Xblock.png");
+  ImageIcon notSolidBlock = new ImageIcon("images/ghost.png");
 
   // Contructor
 
   /**
-   * <p>
    * Conttructor setsBounds of the different piece of the panel
-   * </p>
    * 
    * @param size the dimentions of the grid
    */
   public MapPanel(int size) {
     // set the colour of background to blue
-    this.setBackground(Color.blue);
+    this.setBackground(Color.yellow);
     setLayout(null);
 
-    // initlize size of mapVisual
     mapVisual = new JLabel[size][size];
-    // initlize JButton Enter
+
     enter = new JButton("Enter");
-    // initlize JButton restart
+
     restart = new JButton("Restart");
 
     // Find the middle to set the button to be in the center everytime
@@ -141,10 +105,10 @@ public class MapPanel extends JPanel implements ActionListener {
     // set the enter button to always be in the centered below the tiles
     enter.setBounds(middle, (size * 30) + 20, 120, 50);
     // set the bounds of the restart button
-    restart.setBounds(10, 400, 100, 50);
+    restart.setBounds(middle + 12, (size * 30) + 120, 100, 50);
     // add the restart button to the panel
     add(restart);
-    // add the enter button to panel
+
     add(enter);
 
     // add action listener to restart and enter button
@@ -169,13 +133,13 @@ public class MapPanel extends JPanel implements ActionListener {
     robotPosition = new int[2];
 
     // create new JLabel that says there is no path
-    error = new JLabel("There is no path");
+    error = new JLabel("There is no path! Restart!");
     // set the bounds of JLabel
-    error.setBounds(10, 370, 200, 30);
+    error.setBounds(middle - 20, (size * 30) + 80, 200, 30);
     // set the color of the text
-    error.setForeground(Color.white);
+    error.setForeground(Color.RED);
     // set the font and size of the text
-    error.setFont(new Font("Wide Latin", Font.PLAIN, 12));
+    error.setFont(new Font("Wide Latin", Font.BOLD, 12));
     // add JLabel to panel
     add(error);
     // set the visiblity to false
@@ -184,15 +148,36 @@ public class MapPanel extends JPanel implements ActionListener {
     // initlize local map
     localMap = new LocalMap(map);
 
-    // call generate map method
     generateMap();
 
   }
 
   /**
-   * <p>
+   * updateRobotImage Method updates robot image according to appropriate
+   * orientation
+   */
+
+  public void updateRobotImage(String direction) {
+    switch (direction) {
+      case "Up":
+        robotLabel.setIcon(new ImageIcon("images/PacU.png"));
+        break;
+      case "Down":
+        robotLabel.setIcon(new ImageIcon("images/PacD.png"));
+        break;
+      case "Left":
+        robotLabel.setIcon(new ImageIcon("images/PacL.png"));
+        break;
+      case "Right":
+        robotLabel.setIcon(new ImageIcon("images/PacR.png"));
+        break;
+      default:
+        robotLabel.setIcon(new ImageIcon("images/PacR.png"));
+    }
+  }
+
+  /**
    * generateMap Method generats the map
-   * </p>
    */
   public void generateMap() {
     // create Random object called rand
@@ -222,7 +207,6 @@ public class MapPanel extends JPanel implements ActionListener {
 
           // if its any other block
         } else {
-          // ANY OTHER BLOCK
           // create the bounds, image, and specifcs of the other blocks
           mapVisual[i][k] = new JLabel();
           mapVisual[i][k].setBounds((i * 30) + 10, (k * 30) + 10, 30, 30);
@@ -240,10 +224,10 @@ public class MapPanel extends JPanel implements ActionListener {
             // make the block not solid
             map[i][k] = new Tiles(k, i, false, false, false);
           } else {
-            // NO ELSE
+
           }
         }
-        // ADD THE JLABEL TO THE PANEL
+
         add(mapVisual[i][k]);
       }
     }
@@ -259,7 +243,7 @@ public class MapPanel extends JPanel implements ActionListener {
     // if the robot has completed the map
     if (robotPosition[0] == size - 1 && robotPosition[1] == size - 1) {
       // get the amount of moves it took to complete
-      String data = "Run Completed in: " + counter-- + " Moves\n";
+      String data = "   # of steps taken: " + counter-- + " Score: " + (counter--) * 10 + "\n";
       // add that to the file
       data += readFiles(file);
       // call write to file method
@@ -279,11 +263,16 @@ public class MapPanel extends JPanel implements ActionListener {
             if (map[i][k].getType() == true) {
               // set the icon to solid block
               mapVisual[i][k].setIcon(solidBlock);
+
+              if (map[i][k].getWalkedOn()) {
+                mapVisual[i][k].setIcon(new ImageIcon("images/emptyBlock.png"));
+              }
               // if the block should be shown, but is not solid
             } else {
               // set the icon to not solid block
               mapVisual[i][k].setIcon(notSolidBlock);
             }
+
           }
         }
       }
@@ -294,16 +283,12 @@ public class MapPanel extends JPanel implements ActionListener {
       robotLabel.setBounds((robotPosition[0] * 30) + 10, (robotPosition[1] * 30) + 10, 30, 30);
       // catch index out of bounds exception
     } catch (IndexOutOfBoundsException e) {
-      // System.out.println(e);
+
     }
   }
 
   /**
-   * <p>
    * actionPerformed Method is what happens if the buttons are clicked
-   * </p>
-   * 
-   * @param e
    */
   public void actionPerformed(ActionEvent e) {
     // get which button is clicked
@@ -325,6 +310,7 @@ public class MapPanel extends JPanel implements ActionListener {
         hashOptions = localMap.updateLocalMap(robotPosition, map);
         // update the map
         map = localMap.getMap();
+
         // set the tile that robot is on to walked on true
         map[robotPosition[0]][robotPosition[1]].setWalkedOn(true);
         // call updateMap method to update visuals
@@ -337,6 +323,10 @@ public class MapPanel extends JPanel implements ActionListener {
         // get the position the robot is moving to
         robotPosition = robot.moveRobot(hashOptions, map, robotPosition);
 
+        String Dir = robot.getChosenDirection();
+
+        updateRobotImage(Dir);
+
         // if it responds with -1, -1, that means that robot has decided there is no
         // path
         if (robotPosition[0] == -1 && robotPosition[1] == -1) {
@@ -346,6 +336,7 @@ public class MapPanel extends JPanel implements ActionListener {
 
           // get the new postions the robot can move to
           hashOptions = localMap.updateLocalMap(robotPosition, map);
+
           // update the map
           map = localMap.getMap();
           // set the tile that the robot moved to, to walkedOn true
