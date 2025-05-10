@@ -8,41 +8,21 @@ import java.io.IOException;
 import java.io.File;
 
 /**
- * The Main class
- * <p>
- * This class deals with transfer information between panels
- * </p>
- * <p>
- * it also sets the visiablity of the different panels
- * </p>
- * 
- * @author 
- * @version 1.0
- * @since 2023-01-24
+ * Main class
+ * Transfers information between panels
  */
 public class Main {
 
-  /**
-   * size is an int that is the dimentons of the map
-   */
   public static int size;
-  /**
-   * data is the string message read from the file
-   */
+
   public static String data;
-  /**
-   * GUI is a JFrame that the panels are added to
-   */
+
   public static JFrame GUI = new JFrame();
-  /**
-   * pane is Container that holds the different panels
-   */
+
   public static Container pane = GUI.getContentPane();
 
   /**
-   * <p>
-   * main Method calls creates the JFrame and starts the program
-   * </p>
+   * main Method creates the JFrame and starts program
    * 
    * @param args
    */
@@ -52,7 +32,7 @@ public class Main {
     pane.removeAll();
 
     // set the title of the JFrame
-    GUI.setTitle("Robot Maze Runner");
+    GUI.setTitle("Pacman Maze");
     // set the size of the JFrame
     GUI.setSize(340, 500);
     // close the JFrame if the X is clicked
@@ -67,7 +47,7 @@ public class Main {
 
   /**
    * <p>
-   * setIntroPanelVisible Method makes the intro panel visible
+   * setIntroPanelVisible makes intro panel visible
    * </p>
    */
   public static void setIntroPanelVisible() {
@@ -78,13 +58,13 @@ public class Main {
     // add the intro panel to the pane
     pane.add(introPanel);
     // make the JFrame visible
+    pane.revalidate(); // Force layout update
+    pane.repaint(); // Force redraw
     GUI.setVisible(true);
   }
 
   /**
-   * <p>
    * setEndPanelVisible Method makes the end panel visible
-   * </p>
    * 
    * @param data
    */
@@ -96,13 +76,13 @@ public class Main {
     // add the end panel to the pane
     pane.add(endPanel);
     // make JFrame visible
+    pane.revalidate(); // Force layout update
+    pane.repaint(); // Force redraw
     GUI.setVisible(true);
   }
 
   /**
-   * <p>
    * setMapPanelVisible Method sets the mapPanel visible
-   * </p>
    */
   public static void setMapPanelVisible() {
     // create new object mapPanel and pass it the size of the map
@@ -111,14 +91,14 @@ public class Main {
     pane.removeAll();
     // add mapPanel to the pane
     pane.add(mapPanel);
+    pane.revalidate(); // Force layout update
+    pane.repaint(); // Force redraw
     // make the JFrame visible
     GUI.setVisible(true);
   }
 
   /**
-   * <p>
    * setIcon Method sets the icon of the JFrame
-   * </p>
    * 
    * @param GUI
    */
@@ -127,8 +107,8 @@ public class Main {
     Image icon = null;
 
     try {
-      // read the file called "luffyReplit2.png" and set that to image icon
-      icon = ImageIO.read(new File("images/luffyReplit2.png"));
+      // read the file called "pacman.png" and set that to image icon
+      icon = ImageIO.read(new File("images/PacR.png"));
 
       // catch input output exception
     } catch (IOException e) {
